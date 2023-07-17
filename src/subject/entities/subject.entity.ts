@@ -24,6 +24,6 @@ export class Subject {
   @Column({ default: false })
   isModerator: boolean;
 
-  @ManyToOne((type) => Group, (group) => group.subjects)
+  @ManyToOne((type) => Group, (group) => group.subjects, { eager: true })
   group: Group;
 }
