@@ -1,5 +1,11 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
+export enum taskStatusEnum {
+  assigned = 'assigned',
+  accomplished = 'accomplished',
+  completed = 'completed',
+}
+
 @Entity()
 export class Task {
   @PrimaryGeneratedColumn()
@@ -11,6 +17,10 @@ export class Task {
   @Column()
   description: string;
 
-  @Column()
-  status: string;
+  @Column({
+    type: 'enum',
+    enum: taskStatusEnum,
+    default: taskStatusEnum.assigned,
+  })
+  status: taskStatusEnum;
 }
