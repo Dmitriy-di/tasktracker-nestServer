@@ -1,1 +1,8 @@
-export class CreateSubjectDto {}
+export class CreateSubjectDto {
+  first_name: string;
+  middle_name: string;
+  last_name: string;
+  email: string;
+  password: string;
+  isModerator: boolean;
+}
