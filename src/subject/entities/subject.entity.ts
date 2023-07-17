@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import { Group } from 'src/group/entities/group.entity';
 
 @Entity()
 export class Subject {
@@ -22,4 +23,7 @@ export class Subject {
 
   @Column({ default: false })
   isModerator: boolean;
+
+  @ManyToOne((type) => Group, (group) => group.subjects)
+  group: Group;
 }

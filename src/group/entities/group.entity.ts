@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Subject } from 'src/subject/entities/subject.entity';
 
 @Entity()
 export class Group {
@@ -11,6 +12,6 @@ export class Group {
   @Column()
   description: string;
 
-  // @Column({ default: true })
-  // isActive: boolean;
+  @OneToMany((type) => Subject, (subject) => subject.group)
+  subjects: Subject[];
 }
