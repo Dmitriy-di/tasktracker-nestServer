@@ -5,4 +5,5 @@ export class CreateSubjectDto {
   email: string;
   password: string;
   isModerator: boolean;
+  groupId: number;
 }

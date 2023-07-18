@@ -4,4 +4,6 @@ export class CreateTaskDto {
   name: string;
   description: string;
   status: taskStatusEnum;
+  moduleeId: number;
+  subjectId: number;
 }

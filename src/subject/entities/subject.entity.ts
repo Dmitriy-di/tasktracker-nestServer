@@ -18,7 +18,7 @@ export class Subject {
   first_name: string;
 
   @Column()
-  middle_name: string;
+  middle_name: string; 
 
   @Column()
   last_name: string;

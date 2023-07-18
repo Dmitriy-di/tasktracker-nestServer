@@ -3,4 +3,5 @@ export class CreateModuleeDto {
   description: string;
   dateTimeStart: string;
   dateTimeEnd: string;
+  subjectId: number;
 }
