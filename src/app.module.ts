@@ -12,6 +12,7 @@ import { Modulee } from './modulee/entities/modulee.entity';
 import { Subject } from './subject/entities/subject.entity';
 import { Task } from './task/entities/task.entity';
 import { ConfigModule } from '@nestjs/config';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { ConfigModule } from '@nestjs/config';
     ModuleeModule,
     SubjectModule,
     TaskModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
