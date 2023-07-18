@@ -1,5 +1,12 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToMany,
+  ManyToOne,
+} from 'typeorm';
 import { Task } from 'src/task/entities/task.entity';
+import { Subject } from 'src/subject/entities/subject.entity';
 
 @Entity()
 export class Modulee {
@@ -24,4 +31,7 @@ export class Modulee {
 
   @OneToMany((type) => Task, (task) => task.modulee)
   tasks: Task[];
+
+  @ManyToOne((type) => Subject, (subject) => subject.modulees, { eager: true })
+  subject: Subject;
 }
