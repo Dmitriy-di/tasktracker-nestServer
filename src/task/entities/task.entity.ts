@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import { Modulee } from 'src/modulee/entities/modulee.entity';
 
 export enum taskStatusEnum {
   assigned = 'assigned',
@@ -23,4 +24,7 @@ export class Task {
     default: taskStatusEnum.assigned,
   })
   status: taskStatusEnum;
+
+  @ManyToOne((type) => Modulee, (module) => module.tasks, { eager: true })
+  modulee: Modulee;
 }

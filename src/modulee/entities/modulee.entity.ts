@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Task } from 'src/task/entities/task.entity';
 
 @Entity()
 export class Modulee {
@@ -20,4 +21,7 @@ export class Modulee {
     type: 'datetime',
   })
   dateTimeEnd: string;
+
+  @OneToMany((type) => Task, (task) => task.modulee)
+  tasks: Task[];
 }
