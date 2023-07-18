@@ -17,11 +17,16 @@ export class SubjectService {
   }
 
   findAll() {
-    return this.repository.find();
+    return this.repository.find({ relations: ['tasks', 'modulees'] });
   }
 
   findOne(id: number) {
-    return this.repository.findOneBy({ id });
+    return this.repository.findOne({
+      relations: ['tasks', 'modulees'],
+      where: {
+        id,
+      },
+    });
   }
 
   update(id: number, data: UpdateSubjectDto) {
