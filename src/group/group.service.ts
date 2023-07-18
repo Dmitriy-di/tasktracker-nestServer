@@ -17,11 +17,16 @@ export class GroupService {
   }
 
   findAll() {
-    return this.repository.find();
+    return this.repository.find({ relations: ['subjects'] });
   }
 
   findOne(id: number) {
-    return this.repository.findOneBy({ id });
+    return this.repository.findOne({
+      relations: ['subjects'],
+      where: {
+        id,
+      },
+    });
   }
 
   update(id: number, data: UpdateGroupDto) {
