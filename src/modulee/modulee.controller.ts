@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { ModuleeService } from './modulee.service';
 import { CreateModuleeDto } from './dto/create-modulee.dto';
 import { UpdateModuleeDto } from './dto/update-modulee.dto';
