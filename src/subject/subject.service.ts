@@ -36,14 +36,14 @@ export class SubjectService {
     return this.repository.find({ relations: ['tasks', 'modulees'] });
   }
 
-  // findOne(id: number) {
-  //   return this.repository.findOne({
-  //     relations: ['tasks', 'modulees'],
-  //     where: {
-  //       id,
-  //     },
-  //   });
-  // }
+  findOne2(id: number) {
+    return this.repository.findOne({
+      relations: ['tasks', 'modulees'],
+      where: {
+        id,
+      },
+    });
+  }
 
   findOne(email: string) {
     return this.repository.findOne({

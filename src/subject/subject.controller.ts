@@ -18,9 +18,8 @@ import { AuthService } from '../auth/auth.service';
 @Controller('subject')
 export class SubjectController {
   constructor(
-    private readonly subjectService: SubjectService,
-  ) // private authService: AuthService,
-  {}
+    private readonly subjectService: SubjectService, // private authService: AuthService,
+  ) {}
 
   // @Post()
   // create(@Body() createSubjectDto: CreateSubjectDto) {
@@ -46,10 +45,10 @@ export class SubjectController {
     return this.subjectService.findAll();
   }
 
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.subjectService.findOne(+id);
-  // }
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.subjectService.findOne2(+id);
+  }
 
   // @Patch(':id')
   // update(@Param('id') id: string, @Body() updateSubjectDto: UpdateSubjectDto) {
