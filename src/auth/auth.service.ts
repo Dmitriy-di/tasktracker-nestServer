@@ -23,6 +23,7 @@ export class AuthService {
     const payload = { email: subject.email, sub: subject.id };
     return {
       access_token: this.jwtService.sign(payload),
+      isModerator: subject.isModerator,
     };
   }
 }

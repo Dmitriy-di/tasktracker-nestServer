@@ -19,6 +19,7 @@ export class SubjectService {
 
   async register(data: CreateSubjectDto) {
     const saltOrRounds = 10;
+
     data.password = await bcrypt.hash(data.password, saltOrRounds);
     return this.repository.save(data);
   }
