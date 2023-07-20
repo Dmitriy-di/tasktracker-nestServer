@@ -7,15 +7,20 @@ import {
   Param,
   Delete,
   UseGuards,
+  Request,
 } from '@nestjs/common';
 import { ModuleeService } from './modulee.service';
 import { CreateModuleeDto } from './dto/create-modulee.dto';
 import { UpdateModuleeDto } from './dto/update-modulee.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { SubjectService } from 'src/subject/subject.service';
 
 @Controller('modulee')
 export class ModuleeController {
-  constructor(private readonly moduleeService: ModuleeService) {}
+  constructor(
+    private readonly moduleeService: ModuleeService,
+    private readonly subjectService: SubjectService,
+  ) {}
 
   @UseGuards(JwtAuthGuard)
   @Post()
@@ -25,8 +30,19 @@ export class ModuleeController {
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  findAll() {
-    return this.moduleeService.findAll();
+  async findAll(@Request() req) {
+    let modulees = [];
+    const email = req.user.userEmail;
+    const user = await this.subjectService.findOne(email);
+    console.log(user);
+
+    if (user.isModerator) {
+      modulees = await this.moduleeService.findAll();
+    } else {
+      modulees = user.modulees;
+    }
+
+    return modulees;
   }
 
   @UseGuards(JwtAuthGuard)

@@ -33,7 +33,9 @@ export class SubjectService {
   }
 
   findAll() {
-    return this.repository.find({ relations: ['tasks', 'modulees'] });
+    return this.repository.find({
+      relations: ['tasks', 'modulees'],
+    });
   }
 
   findOne2(id: number) {
@@ -47,7 +49,7 @@ export class SubjectService {
 
   findOne(email: string) {
     return this.repository.findOne({
-      relations: ['tasks', 'modulees'],
+      relations: ['tasks', 'modulees', 'modulees.tasks'],
       where: {
         email,
       },
