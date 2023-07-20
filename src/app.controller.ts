@@ -11,7 +11,10 @@ import { CreateSubjectDto } from './subject/dto/create-subject.dto';
 import { AuthService } from './auth/auth.service';
 import { SubjectService } from './subject/subject.service';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiTags, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 
+@ApiTags('Auth')
+@ApiBearerAuth()
 @Controller()
 export class AppController {
   constructor(

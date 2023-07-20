@@ -14,7 +14,11 @@ import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { SubjectService } from 'src/subject/subject.service';
+import { ApiTags, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+import { Task } from './entities/task.entity';
 
+@ApiTags('Task')
+@ApiBearerAuth()
 @Controller('task')
 export class TaskController {
   constructor(
@@ -22,6 +26,8 @@ export class TaskController {
     private readonly subjectService: SubjectService,
   ) {}
 
+  @ApiResponse({ status: 201, description: 'Задача создана', type: Task })
+  @ApiResponse({ status: 401, description: 'Нет авторизации' })
   @UseGuards(JwtAuthGuard)
   @Post()
   create(@Body() createTaskDto: CreateTaskDto) {

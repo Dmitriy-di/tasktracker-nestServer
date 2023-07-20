@@ -5,32 +5,21 @@ import { UpdateSubjectDto } from './dto/update-subject.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { AuthService } from '../auth/auth.service';
+import { ApiTags, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+import { Subject } from './entities/subject.entity';
 
+@ApiTags('Subject')
+@ApiBearerAuth()
 @Controller('subject')
 export class SubjectController {
-  constructor(
-    private readonly subjectService: SubjectService, // private authService: AuthService,
-  ) {}
+  constructor(private readonly subjectService: SubjectService) {}
 
-  // @Post()
-  // create(@Body() createSubjectDto: CreateSubjectDto) {
-  //   return this.subjectService.create(createSubjectDto);
-  // }
-
-  // @Post('/register')
-  // register(@Body() createSubjectDto: CreateSubjectDto) {
-  //   return this.subjectService.register(createSubjectDto);
-  // }
-
-  // @UseGuards(AuthGuard('local'))
-  // @Post('/login')
-  // async login(@Request() req) {
-  //   return this.authService.login(req.user);
-  // }
-  // login(@Body() createSubjectDto: CreateSubjectDto) {
-  //   return this.subjectService.login(createSubjectDto);
-  // }
-
+  @ApiResponse({
+    status: 201,
+    description: 'Получены все субъекты',
+    type: Subject,
+  })
+  @ApiResponse({ status: 401, description: 'Нет авторизации' })
   @UseGuards(JwtAuthGuard)
   @Get()
   findAll() {
@@ -42,11 +31,6 @@ export class SubjectController {
   findOne(@Param('id') id: string) {
     return this.subjectService.findOne2(+id);
   }
-
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateSubjectDto: UpdateSubjectDto) {
-  //   return this.subjectService.update(+id, updateSubjectDto);
-  // }
 
   @UseGuards(JwtAuthGuard)
   @Delete(':id')

@@ -12,11 +12,17 @@ import { GroupService } from './group.service';
 import { CreateGroupDto } from './dto/create-group.dto';
 import { UpdateGroupDto } from './dto/update-group.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { ApiTags, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+import { Group } from './entities/group.entity';
 
+@ApiTags('Group')
+@ApiBearerAuth()
 @Controller('group')
 export class GroupController {
   constructor(private readonly groupService: GroupService) {}
 
+  @ApiResponse({ status: 201, description: 'Группа создана', type: Group })
+  @ApiResponse({ status: 401, description: 'Нет авторизации' })
   @UseGuards(JwtAuthGuard)
   @Post()
   create(@Body() createGroupDto: CreateGroupDto) {

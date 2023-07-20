@@ -8,27 +8,37 @@ import {
 import { Group } from 'src/group/entities/group.entity';
 import { Task } from 'src/task/entities/task.entity';
 import { Modulee } from 'src/modulee/entities/modulee.entity';
+import { ApiProperty } from '@nestjs/swagger';
 
 @Entity()
 export class Subject {
+  @ApiProperty({ minimum: 1 })
   @PrimaryGeneratedColumn()
   id: number;
 
+  @ApiProperty()
   @Column()
   first_name: string;
 
+  @ApiProperty()
   @Column()
-  middle_name: string; 
+  middle_name: string;
 
+  @ApiProperty()
   @Column()
   last_name: string;
 
+  @ApiProperty()
   @Column()
   email: string;
 
+  @ApiProperty()
   @Column()
   password: string;
 
+  @ApiProperty({
+    default: false,
+  })
   @Column({ default: false })
   isModerator: boolean;
 

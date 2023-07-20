@@ -1,6 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import { Modulee } from 'src/modulee/entities/modulee.entity';
 import { Subject } from 'src/subject/entities/subject.entity';
+import { ApiProperty } from '@nestjs/swagger';
 
 export enum taskStatusEnum {
   assigned = 'assigned',
@@ -10,15 +11,19 @@ export enum taskStatusEnum {
 
 @Entity()
 export class Task {
+  @ApiProperty({ minimum: 1 })
   @PrimaryGeneratedColumn()
   id: number;
 
+  @ApiProperty()
   @Column()
   name: string;
 
+  @ApiProperty()
   @Column()
   description: string;
 
+  @ApiProperty()
   @Column({
     type: 'enum',
     enum: taskStatusEnum,
