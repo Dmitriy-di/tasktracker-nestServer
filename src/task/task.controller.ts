@@ -7,15 +7,20 @@ import {
   Param,
   Delete,
   UseGuards,
+  Request,
 } from '@nestjs/common';
 import { TaskService } from './task.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { SubjectService } from 'src/subject/subject.service';
 
 @Controller('task')
 export class TaskController {
-  constructor(private readonly taskService: TaskService) {}
+  constructor(
+    private readonly taskService: TaskService,
+    private readonly subjectService: SubjectService,
+  ) {}
 
   @UseGuards(JwtAuthGuard)
   @Post()
@@ -25,8 +30,18 @@ export class TaskController {
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  findAll() {
-    return this.taskService.findAll();
+  async findAll(@Request() req) {
+    let tasks = [];
+    const email = req.user.userEmail;
+    const user = await this.subjectService.findOne(email);
+
+    if (user.isModerator) {
+      tasks = await this.taskService.findAll();
+    } else {
+      tasks = user.tasks;
+    }
+
+    return tasks;
   }
 
   @UseGuards(JwtAuthGuard)
