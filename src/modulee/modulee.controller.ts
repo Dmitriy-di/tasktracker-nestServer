@@ -77,7 +77,7 @@ export class ModuleeController {
   @ApiResponse({ status: 401, description: 'Нет авторизации' })
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.moduleeService.remove(+id);
+  async remove(@Param('id') id: string) {
+    return await this.moduleeService.remove(+id);
   }
 }

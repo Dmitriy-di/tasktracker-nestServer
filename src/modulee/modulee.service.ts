@@ -34,6 +34,6 @@ export class ModuleeService {
   }
 
   async remove(id: number) {
-    return this.repository.delete(id);
+    return await this.repository.delete(id);
   }
 }
