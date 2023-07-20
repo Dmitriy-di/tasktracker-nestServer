@@ -1,18 +1,9 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-  UseGuards,
-  Request,
-} from '@nestjs/common';
+import { Controller, Get, Param, Delete, UseGuards } from '@nestjs/common';
 import { SubjectService } from './subject.service';
 import { CreateSubjectDto } from './dto/create-subject.dto';
 import { UpdateSubjectDto } from './dto/update-subject.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { AuthService } from '../auth/auth.service';
 
 @Controller('subject')
@@ -40,11 +31,13 @@ export class SubjectController {
   //   return this.subjectService.login(createSubjectDto);
   // }
 
+  @UseGuards(JwtAuthGuard)
   @Get()
   findAll() {
     return this.subjectService.findAll();
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.subjectService.findOne2(+id);
@@ -55,6 +48,7 @@ export class SubjectController {
   //   return this.subjectService.update(+id, updateSubjectDto);
   // }
 
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.subjectService.remove(+id);
