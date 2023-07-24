@@ -6,6 +6,7 @@ import { AppModule } from './../src/app.module';
 let access_token = '';
 let userId = '';
 let moduleeId = '';
+let groupId = '';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
@@ -68,6 +69,7 @@ describe('AppController (e2e)', () => {
       });
   });
 
+  // modulee
   it('/modulee (POST)', () => {
     return request(app.getHttpServer())
       .post('/modulee')
@@ -152,6 +154,79 @@ describe('AppController (e2e)', () => {
       .expect(200)
       .expect((res) => {
         console.log(res.body);
+        expect(res.body).toEqual(
+          expect.objectContaining({
+            raw: expect.any(Array),
+            affected: expect.any(Number),
+          }),
+        );
+      });
+  });
+
+  // group
+  it('/group (POST)', () => {
+    return request(app.getHttpServer())
+      .post('/group')
+      .set('Authorization', 'Bearer ' + access_token)
+      .send({
+        name: 'test',
+        description: 'test',
+      })
+      .expect(201)
+      .expect((res) => {
+        groupId = res.body.id;
+        expect(res.body).toEqual(
+          expect.objectContaining({
+            id: expect.any(Number),
+            name: expect.any(String),
+            description: expect.any(String),
+          }),
+        );
+      });
+  });
+
+  it('/group (PATCH)', () => {
+    return request(app.getHttpServer())
+      .patch(`/group/${groupId}`)
+      .set('Authorization', 'Bearer ' + access_token)
+      .send({
+        name: 'test up',
+        description: 'test up',
+      })
+      .expect(200)
+      .expect((res) => {
+        expect(res.body).toEqual(
+          expect.objectContaining({
+            id: expect.any(Number),
+            name: expect.any(String),
+            description: expect.any(String),
+          }),
+        );
+      });
+  });
+
+  it('/group (GET)', () => {
+    return request(app.getHttpServer())
+      .get(`/group/${groupId}`)
+      .set('Authorization', 'Bearer ' + access_token)
+      .expect(200)
+      .expect((res) => {
+        expect(res.body).toEqual(
+          expect.objectContaining({
+            id: expect.any(Number),
+            name: expect.any(String),
+            description: expect.any(String),
+          }),
+        );
+      });
+  });
+
+  it('/group (DELETE)', () => {
+    return request(app.getHttpServer())
+      .delete(`/group/${groupId}`)
+      .set('Authorization', 'Bearer ' + access_token)
+      .expect(200)
+      .expect((res) => {
         expect(res.body).toEqual(
           expect.objectContaining({
             raw: expect.any(Array),
