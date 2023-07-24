@@ -4,9 +4,10 @@ import * as request from 'supertest';
 import { AppModule } from './../src/app.module';
 
 let access_token = '';
-let userId = '';
+let subjectId = '';
 let moduleeId = '';
 let groupId = '';
+let taskId = '';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
@@ -34,7 +35,7 @@ describe('AppController (e2e)', () => {
       })
       .expect(201)
       .expect((res) => {
-        userId = res.body.id;
+        subjectId = res.body.id;
         expect(res.body).toEqual(
           expect.objectContaining({
             id: expect.any(Number),
@@ -79,7 +80,7 @@ describe('AppController (e2e)', () => {
         description: 'test',
         dateTimeStart: '2023-07-18 21:01:25.000000',
         dateTimeEnd: '2023-07-18 21:01:25.000000',
-        subject: userId,
+        subject: subjectId,
       })
       .expect(201)
       .expect((res) => {
@@ -106,7 +107,7 @@ describe('AppController (e2e)', () => {
         description: 'test up',
         dateTimeStart: '2023-07-18 21:01:25.000001',
         dateTimeEnd: '2023-07-18 21:01:25.000001',
-        subject: userId,
+        subject: subjectId,
       })
       .expect(200)
       .expect((res) => {
@@ -125,39 +126,23 @@ describe('AppController (e2e)', () => {
       });
   });
 
-  // it('/modulee (GET)', () => {
-  //   return request(app.getHttpServer())
-  //     .get(`/modulee/${moduleeId}`)
-  //     .set('Authorization', 'Bearer ' + access_token)
-  //     .expect(200)
-  //     .expect((res) => {
-  //       console.log(res.body);
-
-  //       expect(res.body).toEqual(
-  //         expect.objectContaining({
-  //           id: expect.any(Number),
-  //           name: expect.any(String),
-  //           description: expect.any(String),
-  //           dateTimeStart: expect.any(Date),
-  //           dateTimeEnd: expect.any(Date),
-  //           subject: expect.any(Object),
-  //           tasks: expect.any(Array),
-  //         }),
-  //       );
-  //     });
-  // });
-
-  it('/modulee (DELETE)', () => {
+  it('/modulee (GET)', () => {
     return request(app.getHttpServer())
-      .delete(`/modulee/${moduleeId}`)
+      .get(`/modulee/${moduleeId}`)
       .set('Authorization', 'Bearer ' + access_token)
       .expect(200)
       .expect((res) => {
         console.log(res.body);
+
         expect(res.body).toEqual(
           expect.objectContaining({
-            raw: expect.any(Array),
-            affected: expect.any(Number),
+            id: expect.any(Number),
+            name: expect.any(String),
+            description: expect.any(String),
+            dateTimeStart: expect.any(String),
+            dateTimeEnd: expect.any(String),
+            subject: expect.any(Object),
+            tasks: expect.any(Array),
           }),
         );
       });
@@ -221,6 +206,92 @@ describe('AppController (e2e)', () => {
       });
   });
 
+  // task
+  it('/task (POST)', () => {
+    return request(app.getHttpServer())
+      .post('/task')
+      .set('Authorization', 'Bearer ' + access_token)
+      .send({
+        name: 'test',
+        description: 'test',
+        status: 'assigned',
+        modulee: moduleeId,
+        subject: subjectId,
+      })
+      .expect(201)
+      .expect((res) => {
+        taskId = res.body.id;
+        expect(res.body).toEqual(
+          expect.objectContaining({
+            id: expect.any(Number),
+            name: expect.any(String),
+            description: expect.any(String),
+            status: expect.any(String),
+            modulee: expect.any(Number),
+            subject: expect.any(Number),
+          }),
+        );
+      });
+  });
+
+  it('/task (PATCH)', () => {
+    return request(app.getHttpServer())
+      .patch(`/task/${groupId}`)
+      .set('Authorization', 'Bearer ' + access_token)
+      .send({
+        name: 'test up',
+        description: 'test up',
+        status: 'accomplished',
+      })
+      .expect(200)
+      .expect((res) => {
+        expect(res.body).toEqual(
+          expect.objectContaining({
+            id: expect.any(Number),
+            name: expect.any(String),
+            description: expect.any(String),
+            status: expect.any(String),
+          }),
+        );
+      });
+  });
+
+  it('/task (GET)', () => {
+    return request(app.getHttpServer())
+      .get(`/task/${taskId}`)
+      .set('Authorization', 'Bearer ' + access_token)
+      .expect(200)
+      .expect((res) => {
+        expect(res.body).toEqual(
+          expect.objectContaining({
+            id: expect.any(Number),
+            name: expect.any(String),
+            description: expect.any(String),
+            status: expect.any(String),
+            modulee: expect.any(Object),
+            subject: expect.any(Object),
+          }),
+        );
+      });
+  });
+
+  it('/task (DELETE)', () => {
+    return request(app.getHttpServer())
+      .delete(`/task/${taskId}`)
+      .set('Authorization', 'Bearer ' + access_token)
+      .expect(200)
+      .expect((res) => {
+        expect(res.body).toEqual(
+          expect.objectContaining({
+            raw: expect.any(Array),
+            affected: expect.any(Number),
+          }),
+        );
+      });
+  });
+
+  // DELETE
+  // delete group
   it('/group (DELETE)', () => {
     return request(app.getHttpServer())
       .delete(`/group/${groupId}`)
@@ -236,9 +307,27 @@ describe('AppController (e2e)', () => {
       });
   });
 
+  // delete module
+  it('/modulee (DELETE)', () => {
+    return request(app.getHttpServer())
+      .delete(`/modulee/${moduleeId}`)
+      .set('Authorization', 'Bearer ' + access_token)
+      .expect(200)
+      .expect((res) => {
+        console.log(res.body);
+        expect(res.body).toEqual(
+          expect.objectContaining({
+            raw: expect.any(Array),
+            affected: expect.any(Number),
+          }),
+        );
+      });
+  });
+
+  //delete subject
   it('/subject (DELETE)', () => {
     return request(app.getHttpServer())
-      .delete(`/subject/${userId}`)
+      .delete(`/subject/${subjectId}`)
       .set('Authorization', 'Bearer ' + access_token)
       .expect(200)
       .expect((res) => {
