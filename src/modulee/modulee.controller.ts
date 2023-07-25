@@ -46,7 +46,6 @@ export class ModuleeController {
     let modulees = [];
     const email = req.user.userEmail;
     const user = await this.subjectService.findOne(email);
-    console.log(user);
 
     if (user.isModerator) {
       modulees = await this.moduleeService.findAll();

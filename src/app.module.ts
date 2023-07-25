@@ -13,6 +13,7 @@ import { Subject } from './subject/entities/subject.entity';
 import { Task } from './task/entities/task.entity';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
+import { EventsModule } from './socket/event.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { AuthModule } from './auth/auth.module';
     SubjectModule,
     TaskModule,
     AuthModule,
+    EventsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
