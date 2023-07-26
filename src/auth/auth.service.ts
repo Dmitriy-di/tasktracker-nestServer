@@ -24,6 +24,7 @@ export class AuthService {
     return {
       access_token: this.jwtService.sign(payload),
       isModerator: subject.subject.isModerator,
+      email: subject.subject.email,
     };
   }
 }

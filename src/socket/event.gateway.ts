@@ -18,7 +18,7 @@ import { Socket, Server } from 'socket.io';
   },
 })
 export class EventsGateway {
-  @SubscribeMessage('events')
+  @SubscribeMessage('message')
   handleEvent(
     @MessageBody() data: string,
     @ConnectedSocket() client: Socket,
