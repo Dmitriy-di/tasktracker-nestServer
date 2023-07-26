@@ -30,15 +30,23 @@ export class EventsGateway {
 
   @SubscribeMessage('connection')
   async handleEvent(
-    @MessageBody() data: any,
+    @MessageBody() email: any,
     @ConnectedSocket() client: Socket,
   ) {
-    const user = await this.subjectService.findOne(data.email);
-    const room = await this.roomService.findOne(`room-${user.id}`);
+    const user = await this.subjectService.findOne(email);
+    let rooms = [];
+    console.log(user.isModerator);
 
+    if (user.isModerator) {
+      rooms = await this.roomService.findAll();
+    } else {
+      rooms = [await this.roomService.findOne(`room-${user.id}`)];
+    }
     console.log(user);
 
-    return data;
+    // const room = await this.roomService.findOne(`room-${user.id}`);
+
+    return rooms;
   }
 
   @SubscribeMessage('message')
@@ -55,9 +63,7 @@ export class EventsGateway {
       room: room.id,
     };
 
-    console.log(dataMessage);
-
     this.chatService.create(dataMessage);
-    return data;
+    return dataMessage;
   }
 }
