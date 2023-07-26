@@ -33,14 +33,18 @@ export class EventsGateway {
     @MessageBody() data: any,
     @ConnectedSocket() client: Socket,
   ) {
-    console.log(111111111, data);
     const user = await this.subjectService.findOne(data.email);
     const room = await this.roomService.findOne(`room-${user.id}`);
-    console.log(user);
-    console.log(room);
 
-    // const dataMessage: CreateChatDto;
-    // this.subjectService.create(data)
+    const dataMessage: CreateChatDto = {
+      message: data.msg,
+      subject: user.id,
+      room: room.id,
+    };
+
+    console.log(dataMessage);
+
+    this.chatService.create(dataMessage);
     return data;
   }
 }
