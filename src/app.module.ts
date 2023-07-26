@@ -14,6 +14,10 @@ import { Task } from './task/entities/task.entity';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { EventsModule } from './socket/event.module';
+import { ChatModule } from './chat/chat.module';
+import { Chat } from './chat/entities/chat.entity';
+import { RoomModule } from './room/room.module';
+import { Room } from './room/entities/room.entity';
 
 @Module({
   imports: [
@@ -26,7 +30,7 @@ import { EventsModule } from './socket/event.module';
       username: process.env.DATABASE_USERNAME,
       password: process.env.DATABASE_PASSWORD,
       database: process.env.DATABASE_NAME,
-      entities: [Group, Modulee, Subject, Task],
+      entities: [Group, Modulee, Subject, Task, Chat, Room],
       synchronize: false,
     }),
     GroupModule,
@@ -35,6 +39,8 @@ import { EventsModule } from './socket/event.module';
     TaskModule,
     AuthModule,
     EventsModule,
+    ChatModule,
+    RoomModule,
   ],
   controllers: [AppController],
   providers: [AppService],

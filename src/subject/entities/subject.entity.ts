@@ -9,6 +9,7 @@ import { Group } from 'src/group/entities/group.entity';
 import { Task } from 'src/task/entities/task.entity';
 import { Modulee } from 'src/modulee/entities/modulee.entity';
 import { ApiProperty } from '@nestjs/swagger';
+import { Chat } from 'src/chat/entities/chat.entity';
 
 @Entity()
 export class Subject {
@@ -50,4 +51,7 @@ export class Subject {
 
   @OneToMany((type) => Modulee, (modulee) => modulee.subject)
   modulees: Modulee[];
+
+  @OneToMany((type) => Chat, (chat) => chat.subject)
+  chats: Chat[];
 }
