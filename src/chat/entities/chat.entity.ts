@@ -11,7 +11,7 @@ export class Chat {
 
   @ApiProperty()
   @Column()
-  name: string;
+  message: string;
 
   //   @ApiProperty()
   //   @Column({
