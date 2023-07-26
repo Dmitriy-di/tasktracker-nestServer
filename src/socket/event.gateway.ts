@@ -28,7 +28,7 @@ export class EventsGateway {
     private readonly roomService: RoomService,
   ) {}
 
-  @SubscribeMessage('message')
+  @SubscribeMessage('connection')
   async handleEvent(
     @MessageBody() data: any,
     @ConnectedSocket() client: Socket,
@@ -36,7 +36,20 @@ export class EventsGateway {
     const user = await this.subjectService.findOne(data.email);
     const room = await this.roomService.findOne(`room-${user.id}`);
 
-    const dataMessage: CreateChatDto = {
+    console.log(user);
+
+    return data;
+  }
+
+  @SubscribeMessage('message')
+  async handleEvent2(
+    @MessageBody() data: any,
+    @ConnectedSocket() client: Socket,
+  ) {
+    const user = await this.subjectService.findOne(data.email);
+    const room = await this.roomService.findOne(`room-${user.id}`);
+
+    const dataMessage: any = {
       message: data.msg,
       subject: user.id,
       room: room.id,
