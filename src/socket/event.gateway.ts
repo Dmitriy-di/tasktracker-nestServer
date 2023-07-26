@@ -9,6 +9,9 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets';
 import { Socket, Server } from 'socket.io';
+import { ChatService } from 'src/chat/chat.service';
+import { CreateChatDto } from 'src/chat/dto/create-chat.dto';
+import { SubjectService } from 'src/subject/subject.service';
 
 @WebSocketGateway({
   path: '',
@@ -18,13 +21,22 @@ import { Socket, Server } from 'socket.io';
   },
 })
 export class EventsGateway {
-  @SubscribeMessage('message')
-  handleEvent(
-    @MessageBody() data: string,
-    @ConnectedSocket() client: Socket,
-  ): string {
-    console.log(111111111, data);
+  constructor(
+    private readonly chatService: ChatService,
+    private readonly subjectService: SubjectService,
+  ) {}
 
+  @SubscribeMessage('message')
+  async handleEvent(
+    @MessageBody() data: any,
+    @ConnectedSocket() client: Socket,
+  ) {
+    console.log(111111111, data);
+    const user = await this.subjectService.findOne(data.email);
+    console.log(user);
+
+    // const dataMessage: CreateChatDto;
+    // this.subjectService.create(data)
     return data;
   }
 }

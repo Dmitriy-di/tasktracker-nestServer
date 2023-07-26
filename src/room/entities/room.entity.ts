@@ -13,17 +13,17 @@ export class Room {
   @Column()
   name: string;
 
-  @ApiProperty()
-  @Column({
-    type: 'datetime',
-  })
-  created_at: string;
+  // @ApiProperty()
+  // @Column({
+  //   type: 'datetime',
+  // })
+  // created_at: string;
 
-  @ApiProperty()
-  @Column({
-    type: 'datetime',
-  })
-  updated_at: string;
+  // @ApiProperty()
+  // @Column({
+  //   type: 'datetime',
+  // })
+  // updated_at: string;
 
   @OneToMany((type) => Chat, (chat) => chat.room)
   chats: Chat[];
