@@ -20,11 +20,11 @@ export class RoomService {
     return this.repository.find({});
   }
 
-  findOne(id: number) {
+  findOne(name: string) {
     return this.repository.findOne({
       relations: [],
       where: {
-        id,
+        name,
       },
     });
   }

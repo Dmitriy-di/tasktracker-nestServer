@@ -26,8 +26,8 @@ export class RoomController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.roomService.findOne(+id);
+  findOne(@Param('id') name: string) {
+    return this.roomService.findOne(name);
   }
 
   @Patch(':id')
