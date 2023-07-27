@@ -42,7 +42,6 @@ export class EventsGateway {
     } else {
       rooms = [await this.roomService.findOne(`room-${user.id}`)];
     }
-    console.log(user);
 
     // const room = await this.roomService.findOne(`room-${user.id}`);
 
@@ -55,15 +54,38 @@ export class EventsGateway {
     @ConnectedSocket() client: Socket,
   ) {
     const user = await this.subjectService.findOne(data.email);
-    const room = await this.roomService.findOne(`room-${user.id}`);
+    const room = await this.roomService.findOneById(data.roomId);
+
+    if (data.previousRoomId != '') {
+      client.leave(`room-${data.previousRoomId}`);
+    }
+    client.join(`room-${data.roomId}`);
+    console.log('leave', `room-${data.previousRoomId}`);
+    console.log('join', `room-${data.roomId}`);
 
     const dataMessage: any = {
       message: data.msg,
-      subject: user.id,
+      subject: user,
       room: room.id,
     };
 
     this.chatService.create(dataMessage);
+
+    client.emit('message', dataMessage);
+    client.broadcast.to(`room-${data.roomId}`).emit('message', dataMessage);
+    console.log('broadcast', `room-${data.roomId}`);
+
     return dataMessage;
+  }
+
+  @SubscribeMessage('roomId')
+  async handleEvent3(
+    @MessageBody() roomId: number,
+    @ConnectedSocket() client: Socket,
+  ) {
+    const roomMessages = await this.chatService.findByRoomId(roomId);
+    client.join(`room-${roomId}`);
+
+    return roomMessages;
   }
 }

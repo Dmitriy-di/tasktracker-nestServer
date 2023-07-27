@@ -20,6 +20,14 @@ export class ChatService {
     return this.repository.find();
   }
 
+  async findByRoomId(roomId: number): Promise<Chat[]> {
+    return this.repository.find({
+      where: {
+        room: { id: roomId },
+      },
+    });
+  }
+
   findOne(id: number) {
     return this.repository.findOne({
       relations: [],

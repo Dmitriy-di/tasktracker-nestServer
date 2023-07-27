@@ -29,6 +29,15 @@ export class RoomService {
     });
   }
 
+  findOneById(id: number) {
+    return this.repository.findOne({
+      relations: [],
+      where: {
+        id,
+      },
+    });
+  }
+
   update(id: number, data: UpdateRoomDto) {
     return this.repository.save({ ...data, id });
   }
